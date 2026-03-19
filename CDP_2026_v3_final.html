@@ -1,0 +1,432 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{padding:1rem 0;font-family:var(--font-sans);font-size:14px}
+:root{--navy:#1a2464;--navy-l:#e8eaf6;--navy-m:#3d4fa0;--red:#e31e24;--red-l:#fdeaea;--border:#d0d4ec}
+.nav-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:2px solid var(--navy)}
+.logo{width:32px;height:32px;border-radius:6px;background:var(--navy);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:500;flex-shrink:0}
+.nav-title{font-size:14px;font-weight:500;color:var(--navy);flex:1}
+.nav-year{font-size:11px;color:var(--red);font-weight:500}
+.nav-wrap{margin-bottom:1.25rem}
+.nav-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:5px}
+.nav-label{font-size:10px;color:var(--navy);opacity:.5;text-transform:uppercase;letter-spacing:.05em;font-weight:500;min-width:60px;flex-shrink:0}
+.nb{padding:4px 11px;border-radius:20px;border:0.5px solid var(--border);font-size:11px;cursor:pointer;background:transparent;color:var(--navy);white-space:nowrap;transition:all .15s}
+.nb:hover{background:var(--navy-l)}
+.nb.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nb.ev{border-color:var(--red)}
+.nb.ev.act{background:var(--red);border-color:var(--red)}
+.nb.dep{border-color:#3d4fa0}
+.nb.dep.act{background:#3d4fa0;border-color:#3d4fa0}
+.ptitle{font-size:15px;font-weight:500;color:var(--navy);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.ptitle::before{content:'';display:block;width:3px;height:16px;background:var(--red);border-radius:2px;flex-shrink:0}
+.card{background:#fff;border:0.5px solid var(--border);border-radius:8px;padding:.9rem 1rem;margin-bottom:.9rem}
+.card.accent{border-top:3px solid var(--red)}
+.card.navy-accent{border-top:3px solid var(--navy)}
+.field{display:flex;flex-direction:column;gap:3px;margin-bottom:7px}
+.field label{font-size:11px;color:var(--navy);font-weight:500}
+.field input,.field select,.field textarea{font-size:12px;padding:5px 8px;border-radius:6px;border:0.5px solid var(--border);background:#fff;color:var(--navy);width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--navy)}
+.field textarea{resize:vertical;min-height:52px}
+.chk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border);cursor:pointer;flex-shrink:0;margin-top:1px;background:transparent}
+.chk.done{background:var(--navy);border-color:var(--navy)}
+.check-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid #eef0f8;font-size:12px;color:var(--navy)}
+.add-check{font-size:11px;color:var(--red);border:none;background:none;cursor:pointer;padding:4px 0;font-weight:500}
+.m-toggle{width:28px;height:22px;border-radius:3px;font-size:10px;border:0.5px solid var(--border);background:transparent;color:#9099c0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.m-toggle.on{border-color:var(--navy);background:var(--navy-l);color:var(--navy);font-weight:500}
+.btn-n{padding:5px 14px;border-radius:20px;border:1px solid var(--navy);background:var(--navy);color:#fff;font-size:12px;cursor:pointer;font-weight:500}
+.btn-n:hover{background:var(--navy-m)}
+.btn-o{padding:5px 12px;border-radius:20px;border:1px solid var(--navy);background:transparent;color:var(--navy);font-size:12px;cursor:pointer}
+.btn-o:hover{background:var(--navy-l)}
+.btn-r{padding:5px 12px;border-radius:20px;border:1px solid var(--red);background:transparent;color:var(--red);font-size:12px;cursor:pointer}
+.btn-ig{padding:5px 12px;border-radius:20px;border:1px solid #E8890C;background:#FAEEDA;color:#633806;font-size:11px;cursor:pointer;font-weight:500}
+.btn-ig:hover{opacity:.85}
+.pct-wrap{height:6px;background:#e0e3f0;border-radius:3px;margin-top:6px;overflow:hidden}
+.pct-bar{height:100%;border-radius:3px;transition:width .3s}
+.g-wrap{overflow-x:auto;margin-bottom:1rem}
+.g-grid{min-width:680px}
+.g-head{display:grid;grid-template-columns:150px repeat(10,1fr);font-size:11px;color:var(--navy);padding-bottom:5px;border-bottom:1.5px solid var(--navy);margin-bottom:4px;font-weight:500}
+.g-row{display:grid;grid-template-columns:150px repeat(10,1fr);align-items:center;min-height:27px;border-bottom:0.5px solid #e8eaf0}
+.g-lbl{font-size:11px;padding:3px 4px 3px 2px;color:var(--navy);font-weight:500;cursor:pointer;line-height:1.3}
+.g-lbl:hover{color:var(--red)}
+.g-sub{font-size:10px;color:#9099c0;font-weight:400}
+.g-sec{font-size:10px;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;padding:8px 2px 2px;font-weight:500;opacity:.5;grid-column:1/-1}
+.g-cell{height:25px;padding:2px 1px}
+.bar{height:21px;border-radius:3px;font-size:9px;font-weight:500;display:flex;align-items:center;padding:0 5px;cursor:pointer;white-space:nowrap;overflow:hidden}
+.bar:hover{opacity:.8}
+.rrss-t{width:100%;border-collapse:collapse;font-size:12px;min-width:580px}
+.rrss-t th{font-size:11px;font-weight:500;color:#fff;padding:6px 8px;background:var(--navy);text-align:left}
+.rrss-t td{padding:5px 8px;border-bottom:0.5px solid #e0e3f0;color:var(--navy);font-size:12px;vertical-align:top}
+.rrss-t tr:hover td{background:var(--navy-l)}
+[contenteditable]:focus{outline:2px solid var(--navy);border-radius:3px}
+.pill{display:inline-block;font-size:10px;font-weight:500;padding:1px 6px;border-radius:20px}
+.p-ig{background:#FAEEDA;color:#633806}
+.p-wa{background:#E1F5EE;color:#085041}
+.p-ml{background:var(--navy-l);color:var(--navy)}
+.idea-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:0.5px solid #e8eaf0;font-size:12px;color:var(--navy)}
+.idea-n{color:var(--red);font-weight:500;flex-shrink:0}
+.idea-x{color:#c0c5e8;cursor:pointer;font-size:13px;margin-left:auto;flex-shrink:0;line-height:1.5}
+.idea-x:hover{color:var(--red)}
+.irow{display:flex;gap:6px;margin-top:.6rem}
+.irow input{flex:1;font-size:12px;padding:5px 10px;border-radius:20px;border:1px solid var(--navy);background:#fff;color:var(--navy)}
+.mbg{display:none;min-height:280px;background:rgba(26,36,100,.18);border-radius:8px;margin-top:.5rem;align-items:flex-start;justify-content:center;padding:18px}
+.mbg.open{display:flex}
+.modal{background:#fff;border:0.5px solid var(--border);border-top:3px solid var(--navy);border-radius:8px;padding:1rem;width:100%;max-width:310px}
+.modal h3{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.65rem}
+.mbtns{display:flex;gap:6px;justify-content:flex-end;margin-top:.65rem}
+.dir-card{background:#fff;border:0.5px solid var(--border);border-top:3px solid var(--navy);border-radius:8px;padding:.8rem .9rem}
+.ciclo{background:var(--navy-l);border-left:3px solid var(--navy);border-radius:0 6px 6px 0;padding:.5rem .85rem}
+.mkt-box{background:var(--navy-l);border-radius:8px;padding:.75rem 1rem;margin-top:.75rem}
+.mkt-box-title{font-size:11px;font-weight:500;color:var(--navy);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.mkt-row{display:flex;gap:6px;flex-wrap:wrap}
+</style>
+
+<div class="app">
+<div class="nav-header">
+  <div class="logo">CDP</div>
+  <span class="nav-title">Centro de Padres · Craighouse</span>
+  <span class="nav-year">2026</span>
+</div>
+<div class="nav-wrap" id="nav"></div>
+<div id="panes"></div>
+</div>
+
+<script>
+const MES=['Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const DIRS=[
+  {n:'Mariana Vallejo',rol:'Presidenta',ini:'MV',area:'Direccion general'},
+  {n:'Francisco Araneda',rol:'Vicepresidente',ini:'FA',area:'Todos los eventos'},
+  {n:'Christian Rey',rol:'Tesorero',ini:'CR',area:'Finanzas'},
+  {n:'Michelle Crew',rol:'Tesorera adjunta',ini:'MC',area:'Deportes'},
+  {n:'Sari',rol:'Secretaria',ini:'SA',area:'RRSS y pagina web'},
+  {n:'Javier Abud (Pipe)',rol:'Secretario adjunto',ini:'JA',area:'Deportes y tecnologia'},
+];
+const CICLOS=[
+  {c:'Primary',resp:'Mariana Vallejo + Christian Rey'},
+  {c:'Middle',resp:'Pipe + Michelle Crew'},
+  {c:'Senior',resp:'Usuario + Francisco Araneda'},
+];
+const AC={eventos:['#e31e24','#fff','#fdeaea'],comunidad:['#1a2464','#fff','#e8eaf6'],servicios:['#EF9F27','#633806','#FAEEDA'],deportes:['#3d4fa0','#fff','#e8eaf6'],digital:['#5DCAA5','#085041','#E1F5EE'],admin:['#B4B2A9','#444441','#F1EFE8']};
+
+let GI=[
+  {id:1,name:'Craighouse Day + Rifa',area:'eventos',resp:'Francisco Araneda',start:9,end:9,mesa:'ev_craig'},
+  {id:2,name:'Noche con el Arte',area:'eventos',resp:'Francisco Araneda',start:8,end:8,mesa:'ev_arte'},
+  {id:3,name:'Cine al Aire Libre',area:'eventos',resp:'Francisco Araneda',start:5,end:5,mesa:'ev_cine'},
+  {id:4,name:'Servicio de Buses',area:'servicios',resp:'Christian Rey',start:3,end:12,mesa:'buses'},
+  {id:5,name:'Lost & Found',area:'servicios',resp:'Michelle Crew',start:3,end:12,mesa:'lostfound'},
+  {id:6,name:'Brigada Transito',area:'servicios',resp:'Francisco Araneda',start:3,end:12,mesa:'transito'},
+  {id:7,name:'Mesa Tecnologia',area:'digital',resp:'Javier Abud (Pipe)',start:3,end:12,mesa:'tecnologia'},
+  {id:8,name:'Politica Interna',area:'admin',resp:'Mariana Vallejo',start:3,end:12,mesa:'politica'},
+  {id:9,name:'Futbol',area:'deportes',resp:'Javier Abud (Pipe)',start:4,end:11,mesa:'futbol'},
+  {id:10,name:'Padel',area:'deportes',resp:'Michelle Crew',start:4,end:11,mesa:'padel'},
+  {id:11,name:'Ski',area:'deportes',resp:'Javier Abud (Pipe)',start:7,end:7,mesa:'ski'},
+  {id:12,name:'Becas',area:'comunidad',resp:'Sari',start:4,end:6,mesa:'becas'},
+  {id:13,name:'Spirit Store',area:'comunidad',resp:'Sari',start:4,end:10,mesa:'spirit'},
+  {id:14,name:'App CDP / WEDO',area:'digital',resp:'Javier Abud (Pipe)',start:3,end:7,mesa:'tecnologia'},
+  {id:15,name:'RRSS y Comunicacion',area:'comunidad',resp:'Sari',start:3,end:12,mesa:'rrss_mesa'},
+];
+let nGid=16;
+
+const EVENTOS=[
+  {id:'ev_craig',nombre:'Craighouse Day + Rifa',resp:'Francisco Araneda',desc:'Gran feria anual. Une los dos hitos del ano.',tasks:['Definir formato y sectores de la feria','Coordinar stands y proveedores','Organizar rifa: premios y logistica','Difusion Instagram en vivo el dia'],months:[9],mkt:{ig:'Stories en vivo el dia del evento. Countdown previo. Recap emocional post-evento.',wa:'Alerta logistica el dia: horario, parking, pagos.',ml:'Info previa: programa, stands, como participar en la rifa.'}},
+  {id:'ev_arte',nombre:'Noche con el Arte',resp:'Francisco Araneda',desc:'Fomento cultural y participacion familiar.',tasks:['Coordinar con area de arte del colegio','Definir logistica del espacio','Convocatoria anticipada','Documentar para RRSS'],months:[8],mkt:{ig:'Stories del proceso creativo previo al evento. Foto final emocional.',wa:'Recordatorio de asistencia 48h antes.',ml:'Invitacion formal con programa del evento.'}},
+  {id:'ev_cine',nombre:'Cine al Aire Libre',resp:'Francisco Araneda',desc:'Actividad de baja friccion, alto impacto comunitario.',tasks:['Elegir pelicula y fecha','Conseguir pantalla y proyector','Coordinar snacks o venta de comida','Difusion masiva'],months:[5],mkt:{ig:'Votacion de pelicula en stories. Post de convocatoria festivo.',wa:'Alerta de inscripcion y recordatorio el dia previo.',ml:'Invitacion con lugar, hora y como inscribirse.'}},
+];
+
+const MESAS=[
+  {id:'buses',nombre:'Servicio de Buses',resp:'Christian Rey',desc:'Supervision del transporte escolar. Foco en ocupacion, pagos y comunicacion.',tasks:['Revisar rutas y ocupacion actual','Digitalizar pagos con QR','Protocolo de comunicacion de incidencias','Lista de espera digital para vacantes'],months:[3,4,5,6,7,8,9,10,11,12],mkt:{ig:'Comunicar mejoras del servicio. Posts informativos sobre nuevas rutas.',wa:'Alertas de cambios o incidencias en tiempo real.',ml:'Informacion de vacantes y actualizaciones del servicio.'}},
+  {id:'lostfound',nombre:'Lost & Found / Reciclaje',resp:'Michelle Crew',desc:'Inventario tecnologizado y Mercado de las Pulgas.',tasks:['Inventario digital de objetos perdidos','Sistema QR para etiquetado','Formato Mercado de las Pulgas de uniformes','Proceso de publicacion en Instagram'],months:[3,4,5,6,7,8,9,10,11,12],mkt:{ig:'Fotos de objetos destacados para reclamar. Lanzamiento Mercado de las Pulgas.',wa:'Avisos periodicos de objetos encontrados.',ml:'Resumen mensual de Lost & Found al correo de apoderados.'}},
+  {id:'transito',nombre:'Brigada de Transito',resp:'Francisco Araneda',desc:'Seguridad vial en accesos al colegio.',tasks:['Mapear puntos criticos','Coordinar voluntarios por turno','Protocolo con Rectoria','Publicar calendario de brigada'],months:[3,4,5,6,7,8,9,10,11,12],mkt:{ig:'Reconocer voluntarios en Instagram. Infografias de seguridad vial.',wa:'Convocatoria de voluntarios por WhatsApp.',ml:'Calendario de turnos a familias comprometidas.'}},
+  {id:'tecnologia',nombre:'Mesa de Tecnologia',resp:'Javier Abud (Pipe)',desc:'Web CDP, WEDO, automatizaciones y herramientas digitales.',tasks:['Completar WEDO (actas + tareas)','Publicar pagina interna CDP','Configurar JOAN con info 2026','Fichas digitales de convenios','Automatizar carpetas Google Drive'],months:[3,4,5,6,7,8,9,10],mkt:{ig:'Tutoriales rapidos de nuevas herramientas. Behind the scenes del CDP digital.',wa:'Notificaciones de nuevas funciones disponibles.',ml:'Guia de uso de la nueva plataforma CDP.'}},
+  {id:'politica',nombre:'Politica Interna',resp:'Mariana Vallejo',desc:'Relaciones institucionales, reconocimientos y clima organizacional.',tasks:['Calendario cumpleanos profesores y autoridades','Desayunos con autoridades del colegio','Asado de fin de ano para trabajadores','Reconocimiento alumnos destacados en RRSS'],months:[3,4,5,6,7,8,9,10,11,12],mkt:{ig:'Posts de reconocimiento a alumnos y profesores. Cobertura de desayunos.',wa:'Avisos internos del directorio.',ml:'Comunicaciones formales a autoridades del colegio.'}},
+  {id:'rrss_mesa',nombre:'RRSS y Comunicacion',resp:'Sari',desc:'Estrategia de contenidos y comunicacion con familias.',tasks:['Plan de contenidos mensual','Kit de herramientas para delegados','Protocolo WhatsApp urgencia vs informacion','Capacitacion delegados'],months:[3,4,5,6,7,8,9,10,11,12],mkt:{ig:'Contenido institucional del CDP. Mostrar impacto real de las iniciativas.',wa:'Estandarizar mensajes por curso con delegados.',ml:'Newsletter mensual con resumen de actividades.'}},
+  {id:'becas',nombre:'Becas y Apoyo Social',resp:'Sari',desc:'Proceso formal de becas con cierre transparente.',tasks:['Criterios y montos 2026','Abrir proceso en Abril','Comunicar resultados con explicacion clara','Informe de cierre a familias'],months:[4,5,6],mkt:{ig:'Post discreto anunciando apertura. Nada que identifique beneficiarios.',wa:'Recordatorio de plazo a todos los cursos.',ml:'Proceso completo: formulario, plazos y resultados.'}},
+  {id:'spirit',nombre:'Spirit Store',resp:'Sari',desc:'Articulos del CDP coordinados con Instagram.',tasks:['Inventariar stock disponible','Catalogo 2026 y precios','Sistema de pedidos simple','Campanas con RRSS'],months:[4,5,6,7,8,9,10],mkt:{ig:'Fotos de productos con identidad CDP. Stories de "quedan pocos".',wa:'Recordatorio de pedidos abiertos.',ml:'Catalogo completo con precios y como pedir.'}},
+];
+
+const RAMAS=[
+  {id:'futbol',nombre:'Futbol',resp:'Javier Abud (Pipe)',ayuda:'Michelle Crew',desc:'Torneos internos entre apoderados.',tasks:['Formato del torneo y equipos','Lista de inscritos','Cancha y arbitros','Implementacion necesaria'],months:[4,5,6,7,8,9,10,11],mkt:{ig:'Fotos de los partidos. Tabla de posiciones. Celebracion del campeon.',wa:'Convocatoria y recordatorio de fechas de partidos.',ml:'Inscripciones y reglamento del torneo.'}},
+  {id:'padel',nombre:'Padel',resp:'Michelle Crew',ayuda:'Javier Abud (Pipe)',desc:'Liga de padel entre apoderados.',tasks:['Acceso a canchas','Formato liga o torneo','Inscripciones y parejas','Calendario de partidos'],months:[4,5,6,7,8,9,10,11],mkt:{ig:'Stories de los partidos. Ranking de parejas.',wa:'Convocatoria y resultados rapidos.',ml:'Inscripciones y reglas de la liga.'}},
+  {id:'ski',nombre:'Ski',resp:'Javier Abud (Pipe)',ayuda:'Michelle Crew',desc:'Salida de ski temporada invierno.',tasks:['Fecha y centro de ski','Buses y arriendo de equipos','Abrir inscripciones','Logistica del dia'],months:[7],mkt:{ig:'Fotos del dia en la nieve. Convocatoria con fechas de inscripcion.',wa:'Recordatorio de cierre de inscripciones.',ml:'Informacion completa: precio, logistica, que llevar.'}},
+];
+
+let CS={};
+[...EVENTOS,...MESAS,...RAMAS].forEach(m=>{CS[m.id]=m.tasks.map(()=>false);});
+
+let IDEAS=['Profesionalizar delegados: kit estandar por curso','E-commerce para pago de buses con confirmacion automatica','Analitica de buses: detectar por que no se llenan cupos','Mercado de las Pulgas: uniformes usados entre familias','Reconocimiento alumnos destacados en RRSS del CDP','Desayunos directorio con autoridades del colegio'];
+
+const RRSS=[
+  {mes:'Marzo',hito:'Arranque del ano',ig:'Presentacion directorio CDP 2026.',wa:'Canales oficiales activos por curso.',ml:'Carta de bienvenida del directorio.'},
+  {mes:'Abril',hito:'Becas / Convenios',ig:'Post convenios disponibles. Stories interactivas.',wa:'Recordatorio apertura de becas.',ml:'Proceso de becas con formulario.'},
+  {mes:'Mayo',hito:'Cine al Aire Libre',ig:'Convocatoria + contenido emocional.',wa:'Alerta de inscripcion.',ml:'Invitacion formal con detalles.'},
+  {mes:'Junio',hito:'Informe semestral',ig:'Infografia de logros del semestre.',wa:'Recordatorio reunion apoderados.',ml:'Informe de gestion semestral.'},
+  {mes:'Julio',hito:'Vacaciones / Ski',ig:'Contenido de vida sana. Rama Ski.',wa:'Avisos vacaciones de invierno.',ml:'Actividades CDP en vacaciones.'},
+  {mes:'Agosto',hito:'Noche con el Arte',ig:'Convocatoria cultural. Stories del proceso.',wa:'Recordatorio de asistencia.',ml:'Programa del evento.'},
+  {mes:'Septiembre',hito:'Craighouse Day',ig:'Vivo del evento. Stories en tiempo real.',wa:'Alertas logisticas del dia.',ml:'Horario, stands y pagos.'},
+  {mes:'Octubre',hito:'Cierre becas',ig:'Agradecimientos.',wa:'Ultima fecha becas.',ml:'Comunicacion de resultados.'},
+  {mes:'Noviembre',hito:'Cierre del ano',ig:'Recap anual en fotos.',wa:'Elecciones y fin de ano.',ml:'Convocatoria elecciones 2027.'},
+  {mes:'Diciembre',hito:'Traspaso',ig:'Cierre emocional del ano.',wa:'Felicitaciones de fin de ano.',ml:'Informe anual. Traspaso documentado.'},
+];
+
+let cur='gantt';
+let eGid=null;
+
+function buildNav(){
+  const el=document.getElementById('nav');
+  const g=(label,items,cls)=>`<div class="nav-group"><span class="nav-label">${label}</span>${items.map(t=>`<button class="nb ${cls||''}${t.id===cur?' act':''}" onclick="goTo('${t.id}')">${t.label}</button>`).join('')}</div>`;
+  el.innerHTML=
+    g('general',[{id:'gantt',label:'Gantt anual'},{id:'directores',label:'Directores'},{id:'rrss',label:'Plan RRSS'},{id:'ideas',label:'Ideas'}])+
+    g('eventos',EVENTOS.map(e=>({id:e.id,label:e.nombre})),'ev')+
+    g('mesas',MESAS.map(m=>({id:m.id,label:m.nombre})))+
+    g('ramas deportivas',RAMAS.map(r=>({id:r.id,label:r.nombre})),'dep');
+}
+
+function goTo(id){cur=id;buildNav();render();}
+
+function render(){
+  const el=document.getElementById('panes');
+  if(cur==='gantt') el.innerHTML=rGantt();
+  else if(cur==='directores') el.innerHTML=rDirs();
+  else if(cur==='rrss') el.innerHTML=rRRSS();
+  else if(cur==='ideas') el.innerHTML=rIdeas();
+  else{
+    const m=[...EVENTOS,...MESAS,...RAMAS].find(x=>x.id===cur);
+    if(m) el.innerHTML=rMesa(m);
+  }
+}
+
+function rGantt(){
+  const groups=[
+    {label:'Eventos',area:'eventos'},
+    {label:'Comunidad / RRSS',area:'comunidad'},
+    {label:'Servicios / Mesas',area:'servicios'},
+    {label:'Deportes',area:'deportes'},
+    {label:'Transformacion digital',area:'digital'},
+    {label:'Administracion',area:'admin'},
+  ];
+  let rows='';
+  groups.forEach(g=>{
+    const its=GI.filter(i=>i.area===g.area);
+    if(!its.length) return;
+    rows+=`<div class="g-row"><div class="g-sec">${g.label}</div></div>`;
+    its.forEach(item=>{
+      let cells='';
+      for(let m=3;m<=12;m++){
+        const on=m>=item.start&&m<=item.end;
+        if(on){
+          const rL=m===item.start?'3px 0 0 3px':'0';
+          const rR=m===item.end?'0 3px 3px 0':'0';
+          const r=item.start===item.end?'3px':`${rL} ${rR}`;
+          cells+=`<div class="g-cell"><div class="bar" style="background:${AC[item.area][0]};color:${AC[item.area][1]};border-radius:${r}" onclick="openGE(${item.id})">${m===item.start?item.name.slice(0,11):''}</div></div>`;
+        } else {
+          cells+=`<div class="g-cell" onclick="openGE(${item.id})" style="cursor:pointer"></div>`;
+        }
+      }
+      const link=item.mesa?`goTo('${item.mesa}')`:' ';
+      rows+=`<div class="g-row"><div class="g-lbl" onclick="${link}">${item.name}<div class="g-sub">${item.resp.split(' ')[0]}</div></div>${cells}</div>`;
+    });
+  });
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+    <p class="ptitle" style="margin:0">Planificacion anual 2026</p>
+    <button class="btn-o" onclick="openGN()" style="font-size:11px;padding:4px 10px">+ Nueva</button>
+  </div>
+  <div class="g-wrap"><div class="g-grid">
+    <div class="g-head"><span>Iniciativa</span>${MES.map(m=>`<span>${m}</span>`).join('')}</div>
+    ${rows}
+  </div></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:.6rem">
+    ${Object.entries(AC).map(([k,v])=>`<span style="font-size:11px;display:flex;align-items:center;gap:4px;color:var(--navy)"><span style="width:9px;height:9px;border-radius:2px;background:${v[0]};display:inline-block"></span>${k}</span>`).join('')}
+  </div>
+  <div class="mbg" id="gm"><div class="modal">
+    <h3 id="gmt">Iniciativa</h3>
+    <div class="field"><label>Nombre</label><input id="gmn"></div>
+    <div class="field"><label>Area</label><select id="gma">${Object.keys(AC).map(a=>`<option>${a}</option>`).join('')}</select></div>
+    <div class="field"><label>Responsable</label><select id="gmr">${DIRS.map(d=>`<option>${d.n}</option>`).join('')}</select></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="field"><label>Inicio (3-12)</label><input id="gms" type="number" min="3" max="12" value="3"></div>
+      <div class="field"><label>Fin (3-12)</label><input id="gme" type="number" min="3" max="12" value="6"></div>
+    </div>
+    <div class="mbtns">
+      <button class="btn-r" id="gmdel" onclick="delG()" style="display:none">Eliminar</button>
+      <button class="btn-o" onclick="closeGM()">Cancelar</button>
+      <button class="btn-n" onclick="saveG()">Guardar</button>
+    </div>
+  </div></div>`;
+}
+
+function rDirs(){
+  return `<p class="ptitle">Directorio CDP 2026</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin-bottom:1.1rem">
+    ${DIRS.map(d=>`<div class="dir-card">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0">${d.ini}</div>
+        <div><div style="font-size:13px;font-weight:500;color:var(--navy)">${d.n}</div><div style="font-size:11px;color:#9099c0">${d.rol}</div></div>
+      </div>
+      <span style="font-size:11px;background:var(--navy-l);color:var(--navy);padding:2px 8px;border-radius:20px">${d.area}</span>
+    </div>`).join('')}
+  </div>
+  <p class="ptitle">Encargados por ciclo</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:7px;margin-bottom:1rem">
+    ${CICLOS.map(c=>`<div class="ciclo"><div style="font-size:12px;font-weight:500;color:var(--navy)">${c.c}</div><div style="font-size:11px;color:var(--navy);opacity:.7;margin-top:2px">${c.resp}</div></div>`).join('')}
+  </div>
+  <button class="btn-o" onclick="sendPrompt('Genera el email de arranque del ano 2026 para cada director del CDP Craighouse con sus responsabilidades clave')">Generar emails de arranque ↗</button>`;
+}
+
+function rRRSS(){
+  return `<p class="ptitle">Plan marketing y RRSS 2026</p>
+  <div style="overflow-x:auto"><table class="rrss-t">
+    <thead><tr><th>Mes</th><th>Hito</th><th><span class="pill p-ig">IG</span></th><th><span class="pill p-wa">WA</span></th><th><span class="pill p-ml">Mail</span></th></tr></thead>
+    <tbody>${RRSS.map((r,i)=>`<tr>
+      <td style="font-weight:500;white-space:nowrap">${r.mes}</td>
+      <td contenteditable="true" oninput="RRSS[${i}].hito=this.textContent">${r.hito}</td>
+      <td contenteditable="true" oninput="RRSS[${i}].ig=this.textContent">${r.ig}</td>
+      <td contenteditable="true" oninput="RRSS[${i}].wa=this.textContent">${r.wa}</td>
+      <td contenteditable="true" oninput="RRSS[${i}].ml=this.textContent">${r.ml}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>
+  <div style="margin-top:.75rem;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn-o" onclick="sendPrompt('Desarrolla el plan de contenidos Instagram del CDP Craighouse para Q1 2026 con posts, stories y reels')">Plan IG Q1 ↗</button>
+    <button class="btn-o" onclick="sendPrompt('Crea el kit de comunicacion estandar para delegados CDP Craighouse 2026')">Kit delegados ↗</button>
+  </div>`;
+}
+
+function rIdeas(){
+  return `<p class="ptitle">Ideas y oportunidades</p>
+  <div id="idl">${IDEAS.map((x,i)=>`<div class="idea-item"><span class="idea-n">${i+1}.</span><span>${x}</span><span class="idea-x" onclick="delI(${i})">x</span></div>`).join('')}</div>
+  <div class="irow"><input id="ii" placeholder="Nueva idea..." onkeydown="if(event.key==='Enter')addI()"><button class="btn-n" onclick="addI()">Agregar</button></div>
+  <div style="margin-top:.75rem"><button class="btn-o" onclick="sendPrompt('Analiza y prioriza estas ideas del CDP Craighouse segun impacto en familias y factibilidad')">Priorizar ideas ↗</button></div>`;
+}
+
+function rMkBox(mkt,nombre,tipo){
+  if(!mkt) return '';
+  const prompt=`Dame ideas de contenido para ${tipo==='evento'?'el evento':'la iniciativa'} "${nombre}" del CDP Craighouse: que publicar en Instagram, que mandar por WhatsApp y que incluir en el mail a las familias`;
+  return `<div class="mkt-box">
+    <div class="mkt-box-title">
+      <span style="font-size:14px">Marketing sugerido</span>
+      <button class="btn-ig" onclick="sendPrompt('${prompt.replace(/'/g,"\\'")}')">Pedir mas ideas ↗</button>
+    </div>
+    <div class="mkt-row" style="margin-bottom:6px">
+      <span class="pill p-ig">IG</span><span style="font-size:11px;color:var(--navy);flex:1">${mkt.ig}</span>
+    </div>
+    <div class="mkt-row" style="margin-bottom:6px">
+      <span class="pill p-wa">WA</span><span style="font-size:11px;color:var(--navy);flex:1">${mkt.wa}</span>
+    </div>
+    <div class="mkt-row">
+      <span class="pill p-ml">Mail</span><span style="font-size:11px;color:var(--navy);flex:1">${mkt.ml}</span>
+    </div>
+  </div>`;
+}
+
+function rMesa(m){
+  const checks=CS[m.id]||[];
+  const pct=checks.length?Math.round(checks.filter(Boolean).length/checks.length*100):0;
+  const barC=pct>=70?'var(--navy)':pct>=40?'#EF9F27':'var(--red)';
+  const tipo=EVENTOS.find(x=>x.id===m.id)?'evento':RAMAS.find(x=>x.id===m.id)?'rama':'mesa';
+  const tipoLabel=tipo==='evento'?'Evento':tipo==='rama'?'Rama deportiva':'Mesa permanente';
+  const gits=GI.filter(g=>g.mesa===m.id);
+  const area=GI.find(g=>g.mesa===m.id)?.area||'comunidad';
+  const [ac,,acl]=AC[area]||['#1a2464','#fff','#e8eaf6'];
+  return `
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:.9rem;flex-wrap:wrap">
+    <button class="btn-o" onclick="goTo('gantt')" style="font-size:11px;padding:3px 9px">← Gantt</button>
+    <span style="font-size:13px;font-weight:500;color:var(--navy);flex:1">${m.nombre}</span>
+    <span style="font-size:10px;font-weight:500;padding:2px 9px;border-radius:20px;background:${acl};color:${ac}">${tipoLabel}</span>
+  </div>
+  <div class="card accent">
+    <div style="display:grid;grid-template-columns:1fr${m.ayuda?'1fr':''};gap:8px">
+      <div class="field"><label>Responsable</label>
+        <select onchange="upResp('${m.id}',this.value,${JSON.stringify(tipo)})">${DIRS.map(d=>`<option${d.n===m.resp?' selected':''}>${d.n}</option>`).join('')}</select>
+      </div>
+      ${m.ayuda?`<div class="field"><label>Apoyo</label><input value="${m.ayuda}" onchange="upAyuda('${m.id}',this.value)"></div>`:''}
+    </div>
+    <div class="field"><label>Descripcion</label><textarea onchange="upDesc('${m.id}',this.value,${JSON.stringify(tipo)})">${m.desc}</textarea></div>
+    <div class="field"><label>Meses activos</label>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px">
+        ${MES.map((mn,i)=>{const mo=i+3;const on=(m.months||[]).includes(mo);return `<button class="m-toggle${on?' on':''}" onclick="togMonth('${m.id}',${mo},this)">${mn}</button>`;}).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card navy-accent">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <span style="font-size:12px;font-weight:500;color:var(--navy)">Checklist</span>
+      <span style="font-size:12px;font-weight:500;color:${barC}">${pct}%</span>
+    </div>
+    <div class="pct-wrap"><div class="pct-bar" style="width:${pct}%;background:${barC}"></div></div>
+    <div style="margin-top:7px">
+      ${(m.tasks||[]).map((t,i)=>`<div class="check-item">
+        <div class="chk${checks[i]?' done':''}" onclick="togChk('${m.id}',${i})"></div>
+        <span style="${checks[i]?'text-decoration:line-through;color:#b0b5d0':''}">${t}</span>
+      </div>`).join('')}
+    </div>
+    <button class="add-check" onclick="addChk('${m.id}',${JSON.stringify(tipo)})">+ Agregar tarea</button>
+  </div>
+  ${rMkBox(m.mkt,m.nombre,tipo)}
+  ${gits.length?`<div class="card" style="margin-top:.75rem">
+    <div style="font-size:12px;font-weight:500;color:var(--navy);margin-bottom:6px">En el Gantt</div>
+    ${gits.map(g=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:0.5px solid #e8eaf0">
+      <div style="width:9px;height:9px;border-radius:2px;background:${AC[g.area][0]};flex-shrink:0"></div>
+      <span style="font-size:12px;flex:1;color:var(--navy)">${g.name}</span>
+      <span style="font-size:11px;color:#9099c0">${MES[g.start-3]}${g.end>g.start?' – '+MES[g.end-3]:''}</span>
+    </div>`).join('')}
+  </div>`:''}
+  <button class="btn-o" style="font-size:11px;margin-top:.65rem" onclick="addToG('${m.id}','${area}','${m.resp}')">+ Agregar iniciativa al Gantt</button>`;
+}
+
+function togChk(id,i){CS[id][i]=!CS[id][i];render();}
+function addChk(id,tipo){
+  const txt=prompt('Nueva tarea:');if(!txt)return;
+  const arr=tipo==='evento'?EVENTOS:tipo==='rama'?RAMAS:MESAS;
+  const m=arr.find(x=>x.id===id);if(m){m.tasks.push(txt);CS[id].push(false);render();}
+}
+function togMonth(id,mon,btn){
+  const m=[...EVENTOS,...MESAS,...RAMAS].find(x=>x.id===id);if(!m)return;
+  const idx=m.months.indexOf(mon);if(idx>-1)m.months.splice(idx,1);else m.months.push(mon);
+  btn.classList.toggle('on');
+  GI.filter(g=>g.mesa===id).forEach(g=>{if(m.months.length){g.start=Math.min(...m.months);g.end=Math.max(...m.months);}});
+}
+function upResp(id,val,tipo){const arr=tipo==='evento'?EVENTOS:tipo==='rama'?RAMAS:MESAS;const m=arr.find(x=>x.id===id);if(m)m.resp=val;}
+function upDesc(id,val,tipo){const arr=tipo==='evento'?EVENTOS:tipo==='rama'?RAMAS:MESAS;const m=arr.find(x=>x.id===id);if(m)m.desc=val;}
+function upAyuda(id,val){const m=RAMAS.find(x=>x.id===id);if(m)m.ayuda=val;}
+function addToG(mid,area,resp){
+  const nm=prompt('Nombre de la iniciativa:');if(!nm)return;
+  const m=[...EVENTOS,...MESAS,...RAMAS].find(x=>x.id===mid);
+  const mons=m&&m.months.length?m.months:[3,12];
+  GI.push({id:nGid++,name:nm,area,resp,start:Math.min(...mons),end:Math.max(...mons),mesa:mid});
+  render();
+}
+function openGN(){
+  eGid=null;
+  document.getElementById('gmt').textContent='Nueva iniciativa';
+  document.getElementById('gmn').value='';
+  document.getElementById('gms').value=3;
+  document.getElementById('gme').value=6;
+  document.getElementById('gmdel').style.display='none';
+  document.getElementById('gm').classList.add('open');
+}
+function openGE(id){
+  const it=GI.find(i=>i.id===id);if(!it)return;
+  eGid=id;
+  document.getElementById('gmt').textContent='Editar';
+  document.getElementById('gmn').value=it.name;
+  document.getElementById('gma').value=it.area;
+  document.getElementById('gmr').value=it.resp;
+  document.getElementById('gms').value=it.start;
+  document.getElementById('gme').value=it.end;
+  document.getElementById('gmdel').style.display='block';
+  document.getElementById('gm').classList.add('open');
+}
+function closeGM(){document.getElementById('gm').classList.remove('open');}
+function saveG(){
+  const d={name:document.getElementById('gmn').value.trim(),area:document.getElementById('gma').value,resp:document.getElementById('gmr').value,start:parseInt(document.getElementById('gms').value),end:parseInt(document.getElementById('gme').value)};
+  if(!d.name)return;
+  if(d.end<d.start)d.end=d.start;
+  if(eGid){const it=GI.find(i=>i.id===eGid);Object.assign(it,d);}
+  else GI.push({id:nGid++,...d,mesa:null});
+  closeGM();render();
+}
+function delG(){if(eGid){GI=GI.filter(i=>i.id!==eGid);closeGM();render();}}
+function delI(i){IDEAS.splice(i,1);render();}
+function addI(){const inp=document.getElementById('ii');if(inp.value.trim()){IDEAS.push(inp.value.trim());inp.value='';render();}}
+
+buildNav();render();
+</script>
